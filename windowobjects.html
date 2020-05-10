@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Window Objects</title>
+</head>
+<body>
+    <h1>Open the console to see the magic!</h1>
+    <div id="globalObject"></div>
+    <div id="os"></div>
+    <div id="posStatus"></div>  
+    <div id="locInfo" > </div>
+    <div id="west"></div>
+
+    <script>
+      // Inspect this object in Chrome's dev tools. Notice anything familiar?
+      console.log("Window Object: "+ window);
+      let htmlObject = "<p> Window Object: "+ window + "</p>";
+      // We can access many properties and methods from this window object
+      console.log("Window Screen Width: "+ window.screen.width);
+      console.log("Window Location Href: "+ window.location.href);
+
+      htmlObject += "<p> Window Screen Width: "+ window.screen.width + "</p>";
+      htmlObject += "<p> Window Object Location: "+ window.location.href + "</p>";
+      // Some methods we've already used; we just don't necessarily have to write "window"
+      // window.alert("Hello");
+
+      function firstFunction() {
+        // The window object is global, so it can be read from within any function
+        console.log("Window global object within Function: "+ window.screen.width);
+      }
+
+      firstFunction();
+
+      function secondFunction(window) {
+        // But in this case, our parameter has the same name as a global variable, so it will take priority
+        // Maybe we shouldn't be naming our parameters "window..."
+        console.log("Window Object as parameter: "+ window);
+      }
+
+      secondFunction("Hello");
+
+      // The same rule applies to our own variables
+      var food = "Pizza";
+      var drink = "Water";
+
+      function thirdFunction(drink) {
+        // Variable "food" is global and is available to this function
+        console.log("Global Variable: "+ food);
+
+        // Variable "drink" is also global but was "shadowed" by our parameter
+        console.log("Global variable shadowed: "+ drink);
+      }
+
+      thirdFunction("Orange Juice");
+      document.getElementById("globalObject").innerHTML = htmlObject;
+
+      function operatingSytem() {  
+            var OSName="Unknown OS"; 
+            if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows"; 
+            if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS"; 
+            if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX"; 
+            if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux"; 
+              
+            // Display the OS name 
+            let html = "<h3>Operating System Tracking ...</h3>";
+            html += "<p>Welcome, " + OSName + " user!</p>";
+            document.getElementById("os").innerHTML = html; 
+        }  
+        operatingSytem();
+        let lat  = 0;
+      let long = 0;
+        
+function locate() {
+   const posStatus = document.querySelector('#posStatus');
+   const locInfo = document.querySelector('#locInfo');
+   posStatus.innerHTML='<h3>Locating...</h3>'
+   if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position)=>{
+       lat  = position.coords.latitude;
+       long = position.coords.longitude;
+      posStatus.innerHTML='<h3>Geo-Location Tracking ... </h3>';
+      // Display Latitude and Logitude
+      locInfo.innerHTML = `<h4>Latitude:</h4> ${lat},<h4>Longitude: </h4> ${long}`;
+      if (long < 0 ){
+     document.getElementById("west").innerHTML = "<h2>West Coast</h2>";
+   } else document.getElementById("west").innerHTML = "<h2>East Coast</h2>";
+    });
+   }
+   
+
+}
+
+  locate();
+    </script>
+    
+</body>
+</html>
